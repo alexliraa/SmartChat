@@ -5,29 +5,29 @@
 # Base da Imagem.
 FROM golang:alpine
 
-# Criando diretório com Hierarquia.
+# Realizando a execução do comando.
 RUN mkdir -p /chat
 
 # Definindo o diretório de trabalho.
 WORKDIR /chat
 
-# Copiando
+# Copiando arquivos e/ou diretórios para dentro da imagem.
 COPY go.mod ./
 COPY go.sum ./
 
-# Executando.
+# Realizando a execução do comando.
 RUN go mod download
 
-# Copiando o arquivo do local para o destino do container.
+# Copiando arquivos e/ou diretórios para dentro da imagem.
 COPY . . 
 
-# Especificando a porta de rede para o Docker.
+# Exponodo a porta para o container quando for iniciado.
 EXPOSE 8080
 
-# Construindo a imagem.
+# Realizando a execução do comando.
 RUN go build
 
-# Definindo executavel quando o conteiner iniciar.
+# Definindo o comando para ser executado quando o conteiner iniciar.
 ENTRYPOINT [ "./backend" ]
 
 
