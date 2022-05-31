@@ -15,7 +15,7 @@
 - Finalizando o desenvolvimento foi necessário a criação do arquivo [docker-compose.yml](https://github.com/alexliraa/SmartChat/blob/main/docker-compose.yml) no qual tem como objetivo subir os 3 ambientes (Redis, Backend e Frontend) de forma isolada. 
 
 
-# h1 Requisitos para testar o chat:
+# Requisitos para testar o chat:
 
 1- Qualquer distro linux.
 2- Docker 
@@ -26,7 +26,7 @@
 *OBS:*   Toda a configuração foi realizada no SO Ubuntu 20.04 LTS. Caso utilize o sistema operacional Windows, recomendo seguir a documentação oficial para habilitar o [WSL](https://docs.microsoft.com/pt-br/windows/wsl/install).
    
    
-# h1 Configurando
+# Configurando
 
 ## Realizando a instalação do Docker:
 
