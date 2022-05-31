@@ -1,0 +1,39 @@
+### Ponto de referencia ###
+### https://docs.docker.com/compose/ ###
+
+version: '3'
+
+# Isolando os componentes em seu devido ambiente.
+services:        
+  redis:
+    image: redis:latest
+    container_name: Smartt-Redis
+    hostname: redis-db
+    volumes:
+      - /data
+    restart: always
+    ports:
+      - 6379:6379
+  backend:
+
+    build: ./backend/
+    container_name: Smartt-Backend
+    hostname: backend
+    restart: always
+    links:
+      - redis
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+  frontend:
+    build: ./frontend/
+    container_name: Smartt-Frontend
+    restart: always
+    hostname: frontend
+    env_file:
+      - .env
+    links:
+      - backend
+    ports:
+      - 3000:3000
