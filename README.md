@@ -111,6 +111,36 @@ pipeline {
 ```
 
   Porém não obtive sucesso.
+  Segue abaixo parte do log:
+
+```
++ docker build -t my-image:30 -f /var/lib/jenkins/workspace/PipelineSmarttBot/backend/Dockerfile .
+Sending build context to Docker daemon   1.05MB
+
+Step 1/10 : FROM golang:alpine
+ ---> 5432f005be2d
+Step 2/10 : RUN mkdir -p /chat
+ ---> Using cache
+ ---> 6fae89a00d8e
+Step 3/10 : WORKDIR /chat
+ ---> Using cache
+ ---> 31402e2acc8a
+Step 4/10 : COPY go.mod ./
+COPY failed: file not found in build context or excluded by .dockerignore: stat go.mod: file does not exist
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+ERROR: script returned exit code 1
+Finished: FAILURE
+```
   Outro ponto de falha obtido foi no do push da imagem. Acredito por ser uma conta free. 
 
 Evidência:
