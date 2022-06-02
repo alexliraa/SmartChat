@@ -119,3 +119,5 @@ Evidência:
 Segue abaixo o link e a credencial de acesso para o Jenkins:
 (http://ec2-54-234-11-212.compute-1.amazonaws.com:8080/) (User: admin; PWD: admin123)
 
+Att,
+Alex Lira
