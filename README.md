@@ -67,66 +67,55 @@ _http://localhost:3000/_
  
 * # PRODUÇÃO:
 
-  Para trabalhar com o docker e o Jenkis, utilizei o serviço ec2 da AWS para subir uma instância do tipo t2.medium na região de Norte da Virginia. 
-  Realizei a configuração do Security group para liberar as portas 8080(jenkins), 6379(Redis), 22(SSh), 8082(Backend) e  3000(Frontend).
-  
-  Após realizar as configurações necessárias no terminal, comecei a configuração do pipeline no Jenkins (http://ec2-54-234-11-212.compute-1.amazonaws.com:8080/) (User: admin; PWD: admin123)
-  
-  Realizei a respectiva configuração do pipeline, porém sem sucesso:
+### Para esta etapa executei os respectivos passos.:
 
+1. Subi uma instância ec2 da AWS do tipo t2.medium em Norte Virginia.
+2. Instalei o servidor Jenkins e o Docker.
+3. Configurei as portas 8080(jenkins), 6379(Redis), 22(SSh), 8082(Backend) e  3000(Frontend) no Security group.
+4. Criei uma conta free no Docker Hub.
+    * Crei o repositório  publico com o nome _pipelinesmarttbot_. 
+    * Gerei o token de acesso com a permissão de leitura/escrita.
+5. Acessei o Jenkins.:
+    * Acessei _Jenkins > Credentials > System > GLobal credentials > Add Credentials_ configuei o usuário, senha e token do Docker hub.
+    * Ainda no gerenciador do Jenkins na sessão _Gerenciador de Plugins_ instalei os plugins "Docker Pipeline", "Docker Plugin" e "Git plugin".
+    * Criei o Job _PipelineSmarttBot_ do tipo Pipeline.
+    * Escrevi o respectivo código:
+```
 pipeline {
     
     agent any
     
     environment {
-        dockerImage =''
-        registry='chat/backend'
-        registryCredential ='alexlira'
+        dockerImage = ''
+        registry = 'alexlira/pipelinesmarttbot'
+        registryCredential = '2ef75517-967d-4bfc-90b0-1a0ed620992c'
     }
     
     stages {
-        stage('Checkout') {
+        stage('Checkout'){
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/alexliraa/SmartChat']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/alexliraa/SmartChat/']]])
             }
         }
-        
-        stage('Build Docker image') {
-           steps {
-               script {
-                   dockerImage = docker.build registry
-               }
-           } 
-        }
-        
-        stage('Uploading Image') {
+        stage('Build Docker Imagem'){
             steps {
                 script {
-                        docker.withRegistry( '', registryCredential ) {
-                        dockerImage.push()
-                    }
+                    dockerImage = docker.build registry
                 }
             }
         }
-        stage('docker stop container') {
-            steps {
-                sh 'docker ps -f name=DockerTestSmarttPipeline -q | xargs --no-run-if-empty docker container stop'
-                sh 'docker container ls -a -fname=DockerTestSmarttPipeline -q | xargs -r docker container rm'
-             }
-        }
-        stage('Docker Run') {
-            steps{
-                script {
-                    dockerImage.run("-p 3000:8000 --rm --name DockerTestSmarttPipeline")
-         }
-      }
     }
-  }
 }
+```
+
+  Porém não obtive sucesso.
+  Outro ponto de falha obtido foi no do push da imagem. Acredito por ser uma conta free. 
+
+Evidência:
+![dockerfail](https://user-images.githubusercontent.com/40442995/171582070-da9b3a39-c3af-4c02-8671-8b9f859a6911.jpg)
+![dockerevidenc](https://user-images.githubusercontent.com/40442995/171582124-b8f1c3fa-96dc-4d41-847e-5f62e5853536.jpg)
 
 
-  
-  
- 
-     
+Segue abaixo o link e a credencial de acesso para o Jenkins:
+(http://ec2-54-234-11-212.compute-1.amazonaws.com:8080/) (User: admin; PWD: admin123)
 
