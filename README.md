@@ -80,6 +80,7 @@ _http://localhost:3000/_
     * Ainda no gerenciador do Jenkins na sessão _Gerenciador de Plugins_ instalei os plugins "Docker Pipeline", "Docker Plugin" e "Git plugin".
     * Criei o Job _PipelineSmarttBot_ do tipo Pipeline.
     * Escrevi o respectivo código:
+
 ```
 pipeline {
     
@@ -97,13 +98,14 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/alexliraa/SmartChat/']]])
             }
         }
-        stage('Build Docker Imagem'){
-            steps {
-                script {
-                    dockerImage = docker.build registry
+        stage('Build image') {
+                steps {
+                    script {
+                        def Back = docker.build("my-image:${env.BUILD_ID}","-f ${env.WORKSPACE}/backend/Dockerfile .")
+                        def Front = docker.build("my-image:${env.BUILD_ID}","-f ${env.WORKSPACE}/frontend/Dockerfile .") 
+                    }
                 }
             }
-        }
     }
 }
 ```
